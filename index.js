@@ -9,7 +9,10 @@ const https = require('https');
 const url = require('url');
 const fs = require('fs');
 const StringDecoder = require('string_decoder').StringDecoder;
-const config = require('./config');
+const config = require('./lib/config');
+const helpers = require('./lib/helpers');
+
+const handlers = require('./lib/handlers');
 
 // Instatiate Http server
 const httpServer = http.createServer((req, res) => {
@@ -40,7 +43,7 @@ httpsServer.listen(config.httpsPort, () => {
 const unifiedServer = (req, res) => {
     // Get URL and parse it
     // parsedUrl contains object with different keys
-    let parsedUrl = url.parse(req.url, true); // true means we are telling to parse the query string
+    const parsedUrl = url.parse(req.url, true); // true means we are telling to parse the query string
 
     // Get the path which is untrimmed
     const path = parsedUrl.pathname;
@@ -70,12 +73,13 @@ const unifiedServer = (req, res) => {
         let choosenHandler = typeof(router[trimmedPath]) != 'undefined' ? router[trimmedPath] : handlers.notFound;
 
         // Data object to send to the handler
+        console.log('queryStringObj ----', queryStringObj.phone)
         const data = {
             trimmedPath,
             queryStringObj,
             method,
             headers,
-            'payload': buffer
+            'payload': helpers.parseJSONToObject(buffer)
         };
         
         // Route the request to the router specified in the handler
@@ -97,20 +101,7 @@ const unifiedServer = (req, res) => {
     });
 }
 
-// Handlers
-const handlers = {};
-
-// Sample handler
-handlers.sample = (data, cb) => {
-    // callback a HTTP status code and a payload which is an obj
-    cb(406, {'name': 'Sample handler'});
-}
-
-// Not found handlers
-handlers.notFound = (data, cb) => {
-    cb(404);
-}
 // Define the routes here
 const router = {
-    'sample': handlers.sample
+    'users': handlers.users
 };
