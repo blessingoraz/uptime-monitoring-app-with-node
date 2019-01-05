@@ -7,12 +7,37 @@
 const http = require('http');
 const https = require('https');
 const url = require('url');
-const PORT = 3000;
-const path = require('path');
+const fs = require('fs');
 const StringDecoder = require('string_decoder').StringDecoder;
+const config = require('./config');
 
-// Server responds to all request
-const server = http.createServer((req, res) => {
+// Instatiate Http server
+const httpServer = http.createServer((req, res) => {
+    unifiedServer(req, res);
+});
+
+// Start the Http server
+httpServer.listen(config.httpPort, () => {
+    console.log(`Listening on port ${config.httpPort} `);
+});
+
+// Instatiate Https server
+const httpsServerOptions = {
+    'key': fs.readFileSync('./https/key.pem'), //You want to use async since the file is read asynchronously
+    'cert': fs.readFileSync('./https/cert.pem')
+};
+
+const httpsServer = https.createServer(httpsServerOptions, (req, res) => {
+    unifiedServer(req, res);
+});
+
+// Start the Https server
+httpsServer.listen(config.httpsPort, () => {
+    console.log(`Listening on port ${config.httpsPort} `);
+});
+
+// All server logic for both Http and Https
+const unifiedServer = (req, res) => {
     // Get URL and parse it
     // parsedUrl contains object with different keys
     let parsedUrl = url.parse(req.url, true); // true means we are telling to parse the query string
@@ -65,20 +90,12 @@ const server = http.createServer((req, res) => {
             const payloadString = JSON.stringify(payload);
 
             // Return the response
+            res.setHeader('Content-Type', 'application/json'); // telling the browser that we are sending JSON and parse it to JSON
             res.writeHead(statusCode); // Writing the status code
             res.end(payloadString);
-
-            // Send the repsonse
-            console.log('Payload here ====', statusCode, payloadString);
         });
     });
-
-});
-
-// Start the server to listen on port 3000
-server.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`)
-});
+}
 
 // Handlers
 const handlers = {};
