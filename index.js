@@ -73,7 +73,6 @@ const unifiedServer = (req, res) => {
         let choosenHandler = typeof(router[trimmedPath]) != 'undefined' ? router[trimmedPath] : handlers.notFound;
 
         // Data object to send to the handler
-        console.log('queryStringObj ----', queryStringObj.phone)
         const data = {
             trimmedPath,
             queryStringObj,
