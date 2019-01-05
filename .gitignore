@@ -3,3 +3,9 @@
 # HTTPS SSL credentials
 key.pem
 cert.pem
+
+# Files written
+.data
+
+# Secret
+secrets.js
