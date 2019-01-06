@@ -102,5 +102,7 @@ const unifiedServer = (req, res) => {
 
 // Define the routes here
 const router = {
-    'users': handlers.users
+    'users': handlers.users,
+    'tokens': handlers.tokens,
+    'checks': handlers.checks
 };
