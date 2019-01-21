@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <!-- General Purpose settings-->
+    <meta charset="utf-8">
+    <meta http-equiv="content-language" content="en-us">
+    <!--Allows all links to be relative-->
+    <base href="{global.baseUrl}">
+
+    <!-- Meta tags(Mostly placeholder variables that can be modified)-->
+    <title>{head.title} | {global.appName}</title>
+    <meta name="description" content="{head.description}">
+
+    <!-- List the static assets-->
+    <link type="image/x-icon" rel="icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="public/app.css">
+    <script type="text/javascript" charset="utf-8" src="public/app.js"></script>
+</head>
+
+<body class="{body.class}">
+    <!-- Page Wrapper-->
+    <div class="wrapper">
+        <!-- Header -->
+        <div class="header">
+            <!-- Logo -->
+            <a class="logo" href="/"></a>
+            <!-- Navigation-->
+            <ul class="menu">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/account/create" class="loggedOut">SignUp</a>
+                </li>
+                <li>
+                    <a href="/session/create" class="loggedOut">Login</a>
+                </li>
+                <li>
+                    <a href="/checks/all" class="loggedIn">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/account/edit" class="loggedIn">Account Settings</a>
+                </li>
+                <li>
+                    <a href="#" class="loggedIn">Logout</a>
+                </li>
+
+            </ul>
+        </div>
+
+        <!-- Page Specific Content-->
+        <div class="content">
